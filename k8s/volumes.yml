@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis
+spec:
+  containers:
+  - name: redis
+    image: redis
+    volumeMounts:
+    - name: redis-storage
+      mountPath: /data/redis
+  volumes:
+  - name: redis-storage
+    emptyDir: {}
+---
+
+# Create a storage class
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: standard
+# provisioner: kubernetes.io/aws-ebs
+# parameters:
+#   type: gp2
+# reclaimPolicy: Delete
+# volumeBindingMode: Immediate
+
+---
+#  Provision volume (dynamically or statically)
+
+#Static
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: my-static-pv
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   capacity:
+#     storage: 1Gi
+#   csi:
+#     driver: dobs.csi.digitalocean.com
+#     fsType: ext4
+#     volumeAttributes:
+#       storage.kubernetes.io/csiProvisionerIdentity: <id>-dobs.csi.digitalocean.com
+#     volumeHandle: <id>
+#   persistentVolumeReclaimPolicy: Retain
+#   volumeMode: Filesystem
+
+---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: static-claim
+# spec:
+#   accessModes:
+#     - ReadWriteOnce # the volume can be mounted as read-write by a single node.
+#   resources:
+#     requests:
+#       storage: 1Gi
+#   volumeMode: Filesystem
+
+---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: myapp
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: myapp
+#   template:
+#     metadata:
+#       labels:
+#         app: myapp
+#     spec:
+#       containers:
+#       - name: myapp
+#         image: myapp
+#         command: ["/bin/sh", "-c", "while true; do echo $(date) >> /mnt/data/date.txt; sleep 1; done"]
+#         volumeMounts:
+#         - name: data-volume
+#           mountPath: /mnt/data
+#       volumes:
+#       - name: data-volume
+#         persistentVolumeClaim:
+#           claimName: static-claim

@@ -1,0 +1,39 @@
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: myapp-service
+# spec:
+#   selector:
+#     app: myapp
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 3000
+
+########################NodePort#######################
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: myapp-service
+# spec:
+#   selector:
+#      app: myapp
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 3000
+#   type: NodePort # minikube service
+########################LoadBalancer#######################
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  selector:
+    app: myapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer # minikube tunnel to get external ip 
+
