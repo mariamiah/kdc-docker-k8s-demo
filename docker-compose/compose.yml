@@ -1,10 +1,10 @@
 services:
   web:
-    image: mariahdocker123/myapp
+    image: mariahdocker123/kdcapp
     ports:
-      - '3000:3000'
+      - '3100:3000'
     volumes:
-    - .:/code
+    - .:/app/code
     depends_on:
       - db
   db:
