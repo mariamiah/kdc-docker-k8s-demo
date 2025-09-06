@@ -1,23 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
+  name: kdc-service
   namespace: demo-app
 spec:
   selector:
-    app: backend
-  ports:
-  - port: 80
-    targetPort: 3000
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend-service
-  namespace: demo-app
-spec:
-  selector:
-    app: frontend
+    app: kdc
   ports:
   - port: 80
     targetPort: 80
