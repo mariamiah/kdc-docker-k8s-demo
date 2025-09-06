@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kdc
+  namespace: demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kdc
+  template:
+    metadata:
+      labels:
+        app: kdc
+    spec:
+      containers:
+      - name: kdc
+        image: kdc:latest
+        ports:
+        - containerPort: 80
